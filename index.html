@@ -1,183 +1,37 @@
 <html lang="ja">
-    <body><div id="all">
-        <div id="context">
-            <div id="timer">
-                <span>03:00:</span>
-                <span style="font-size: 50%;">00</span>
-            </div>
-        </div>
-        <div id="question">
-            aaaaa
-        </div>
-        <button id="palletopen" onclick="IsAdmin()">command</button>
+    <head>
+        <link rel="stylesheet" href="./mian.css">
+    </head>
 
-        <div class="pallet" id="AdminAttestation" style="display: none;">
-            <div id="AA_text">暗証番号</div>
-            <input type="text" id="passbox">
-            <div id="AA_buttonArea">
-                <button class="AA_button" onclick="CheckPass()">認証</button>
-                <button class="AA_button" onclick="ClosePallet()">戻る</button>
+    <body>
+        <div id="all">
+            <div id="context">
+                <div id="timer">
+                    <span>03:00:</span>
+                    <span style="font-size: 50%;">00</span>
+                </div>
             </div>
-            <div id="AA_notcorrect"></div>
-        </div>
-        <div class="pallet" id="commandpallet" style="display: none;">
+            <div id="RefuseArea">
+                <div style="text-align: center;">爆弾解除コード</div>
+                <div id="RefuseBoxArea"></div>
+            </div>
+            <button id="palletopen" onclick="IsAdmin()">command</button>
             <button id="start" onclick="timerStart()">start</button>
+
+            <div class="pallet" id="AdminAttestation" style="display: none;">
+                <div id="AA_text">暗証番号</div>
+                <input type="text" id="passbox">
+                <div id="AA_buttonArea">
+                    <button class="AA_button" onclick="CheckPass()">認証</button>
+                    <button class="AA_button" onclick="ClosePallet()">戻る</button>
+                </div>
+                <div id="AA_notcorrect"></div>
+            </div>
+            <div class="pallet" id="commandpallet" style="display: none;">
+                <button id="start" onclick="timerStart()">start</button>
+            </div>
         </div>
-    </div></body>
+
+    <script src="./main.js"></script>
+    </body>
 </html>
-
-<script>
-    let starttime;
-    let maxtime = 180-1;//int
-    let interval = null;
-
-    document.getElementById("passbox").addEventListener("keydown", function(e){
-        if(e.key == "Enter")[
-            CheckPass()
-        ]
-    });
-
-    function CheckPass(){
-        if(document.getElementById("passbox").value == "test"){
-            opencommandpallet();
-            document.getElementById("AA_notcorrect").textContent = "";
-        } else {
-            document.getElementById("AA_notcorrect").textContent = "パスワードが違います";
-        }
-        document.getElementById("passbox").value = "";
-    }
-
-    function timerStart() {
-        starttime = new Date();
-        interval = setInterval(update,70);
-        document.getElementById("start").style.display = "none";
-    }
-
-    function update (){
-        const now = new Date();
-        const timer = document.getElementById("timer");
-
-        const delta = now.getTime() - starttime.getTime();
-        const deltasec = Math.floor(delta/1000);
-
-        const mm = (99 - Math.floor(delta/10) %100).toString().padStart(2,"0");
-        const sec = Math.floor(((maxtime - deltasec) % 60)).toString().padStart(2,"0");
-        const min = Math.floor((maxtime -deltasec)/60).toString().padStart(2,"0");
-        timer.innerHTML = `${min}:${sec}:<span style="font-size: 50%;">${mm}</span>`;
-        if(((maxtime+1)*1000 - delta) <= 0){
-            reset();
-        }
-    }
-
-    function IsAdmin(){
-        document.getElementById("AdminAttestation").style.display = "flex";
-        document.getElementById("palletopen").style.display = "none";
-    }
-
-    function opencommandpallet(){
-        document.getElementById("AdminAttestation").style.display = "none";
-        document.getElementById("commandpallet").style.display = "flex";
-    }
-
-    function ClosePallet(){
-        document.getElementById("AdminAttestation").style.display = "none";
-        document.getElementById("commandpallet").style.display = "none";
-        document.getElementById("palletopen").style.display = "block";
-        document.getElementById("AA_notcorrect").textContent = "";
-        document.getElementById("passbox").value = "";
-    }
-
-    function reset(){
-        clearInterval(interval);
-        document.getElementById("timer").innerHTML = `00:00:<span style="font-size: 50%;">00</span>`;
-        document.getElementById("start").style.display = "block";
-        ClosePallet();
-    }
-    </script>
-
-<style>
-    body{
-        background-color: black;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    #all{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: min(95vw,95vh * 1.5);
-        height: min(95vh,95vw / 1.5);
-    }
-    #context{
-        display: flex;
-        width: 100%;
-        height: 50%;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-    #timer{
-        color: greenyellow;
-        display: flex;
-        width: min(75vw,75vh * 1.5);
-        height: min(75vh,75vw / 1.5);
-        font-size: min(20vw,20vh * 1.5);
-        align-items: baseline;
-        justify-content: center;
-    }
-    #question{
-        color: white;
-        display: flex;
-        width: 100%;
-        height: 50%;
-        justify-content: center;
-        font-size: 7vw;
-    }
-    .pallet{
-        color: black;
-        background-color: burlywood;
-        border: 5px solid white;
-        position: absolute;
-        /*display: flex;*/
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        width: 70%;
-        height: 70%;
-    }
-    #AA_buttonArea{
-        flex-direction: row;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 90%;
-        height: 30%;
-    }
-    .AA_button{ 
-        width: 40%;
-        height: 70%;
-    }
-    #passbox{
-        width: 70%;
-        height: 10%;
-    }
-    #AA_text{
-        font-size: min(10vw,10vh * 1.5);
-    }
-    .aa_notcorrect{
-        font-size: min(5vw,5vh * 1.5);
-    }
-    #palletopen{
-        position: absolute;
-        bottom: 0%;
-        right: 0%;
-        font-size: min(3vw, 3vh * 1.5);
-        z-index: 10000000;
-    }
-</style>
-
