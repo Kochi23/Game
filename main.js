@@ -86,6 +86,7 @@ function reset(){
     document.getElementById("start").style.display = "block";
     ClosePallet();
     InputReset();
+    inputEnd();
 }
 
 let key_counting = "";
@@ -183,7 +184,7 @@ function inputProcessing(e){
     }
     key_counting += k;
 
-    if(k in keylist) {
+    if(key_counting in keylist) {
         SetInput(keylist[key_counting],true);
         key_counting = "";
     }
@@ -225,6 +226,11 @@ function check_key(str){
 }
 
 function SetInput(str,bool){
+    if(box_counting >= size){
+        ResetInputing();
+        return;
+    }
+
     if(bool===true){
         let i;
         for(i=0; i<str.length; i++){
@@ -241,7 +247,7 @@ function SetInput(str,bool){
 }
 
 function deleteInput(){
-    box_counting --;
+    box_counting--;
     document.getElementById(`RefuseBox${box_counting}`).textContent = "";
 }
 

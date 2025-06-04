@@ -109,6 +109,8 @@ body{
     width: 10%;
     aspect-ratio: 1/1;
     border: 5px solid white;
+    align-items: center;
+    justify-content: center;
 }
     @font-face {
     font-family: 'Timer_font';
