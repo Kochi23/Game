@@ -8,13 +8,16 @@ let setpassmode = 1;
 let temppass = "";
 let pass = "";
 
-document.getElementById("passbox").addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-        CheckPass();
-    }
-});
-
 inputStart();
+
+function palletopen(){
+    let p = document.getElementById("pallet")
+    if(p.style.display  == "none") {
+        p.style.display = "flex";
+    } else {
+        p.style.display = "none";
+    }
+}
 
 function RefuseBoxSet(){
     const area = document.getElementById("RefuseBoxArea");
@@ -23,16 +26,6 @@ function RefuseBoxSet(){
     for(let i=0; i<size; i++){
         area.innerHTML += `<div class='RefuseBox' id='RefuseBox${i}'></div>`;
     }
-}
-
-function CheckPass(){
-    if(document.getElementById("passbox").value === "test"){
-        opencommandpallet();
-        document.getElementById("AA_notcorrect").textContent = "";
-    } else {
-        document.getElementById("AA_notcorrect").textContent = "パスワードが違います";
-    }
-    document.getElementById("passbox").value = "";
 }
 
 function timerStart() {
@@ -64,33 +57,10 @@ function update (){
     }
 }
 
-function IsAdmin(){
-    document.getElementById("AdminAttestation").style.display = "flex";
-    document.getElementById("palletopen").style.display = "none";
-    inputEnd();
-}
-
-function opencommandpallet(){
-    document.getElementById("AdminAttestation").style.display = "none";
-    document.getElementById("commandpallet").style.display = "flex";
-}
-
-function ClosePallet(){
-    document.getElementById("AdminAttestation").style.display = "none";
-    document.getElementById("commandpallet").style.display = "none";
-    document.getElementById("palletopen").style.display = "block";
-    document.getElementById("AA_notcorrect").textContent = "";
-    document.getElementById("passbox").value = "";
-    if(interval !== null){
-        inputStart();
-    }
-}
-
 function reset(){
     clearInterval(interval);
     document.getElementById("timer").innerHTML = `00:00:<span style="font-size: 50%;">00</span>`;
     document.getElementById("start").style.display = "block";
-    ClosePallet();
     InputReset();
     inputEnd();
 }
@@ -195,12 +165,14 @@ function inputProcessing(e){
                 } else {
                     if(pass == temppass){
                         document.getElementById("RefuseAreaText").textContent = "パスワード設定完了";
+                        document.getElementById("IsSetPassBox2").textContent = "*";
                         size = pass.length;
                         inputEnd();
                         setTimeout(() => {
                             RefuseBoxSet();
                             setpassmode = 0;
                             document.getElementById("RefuseAreaText").textContent = "爆弾解除コード";
+                            document.getElementById("start").style.display = "block";
                         }, 1000);
                     } else {
                         ResetInputing();
@@ -215,8 +187,9 @@ function inputProcessing(e){
                     str += document.getElementById(`RefuseBox${i}`).textContent;
                 }
                 if(CanRefuse(str)){
-                //クリア
-                timerEnd();
+                    //クリア
+                    timerEnd();
+                    document.getElementById("Refuse_sound").play();
                 } else {
                     ResetInputing();
                 }

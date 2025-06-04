@@ -1,6 +1,7 @@
 <html lang="ja">
     <head>
         <link rel="stylesheet" href="./mian.css">
+        <audio id="Refuse_sound" src="sound/OtoLogic/Refuse.mp3" preload="auto"></audio>
     </head>
 
     <body>
@@ -18,20 +19,11 @@
                     <div class='RefuseBox' id='IsSetPassBox2'></div>
                 </div>
             </div>
-            <button id="palletopen" onclick="IsAdmin()">command</button>
-            <button id="start" onclick="timerStart()">start</button>
+            <button id="palletopen" onclick="palletopen()">License</button>
+            <button id="start" onclick="timerStart()" style="display: none;">Start</button>
 
-            <div class="pallet" id="AdminAttestation" style="display: none;">
-                <div id="AA_text">暗証番号</div>
-                <input type="text" id="passbox">
-                <div id="AA_buttonArea">
-                    <button class="AA_button" onclick="CheckPass()">認証</button>
-                    <button class="AA_button" onclick="ClosePallet()">戻る</button>
-                </div>
-                <div id="AA_notcorrect"></div>
-            </div>
-            <div class="pallet" id="commandpallet" style="display: none;">
-                <button id="start" onclick="timerStart()">start</button>
+            <div id="pallet" style="display: none;">
+                使用した音素材：OtoLogic(https://otologic.jp)
             </div>
         </div>
 

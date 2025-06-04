@@ -40,7 +40,7 @@ body{
     justify-content: center;
     font-size: 7vw;
 }
-.pallet{
+#pallet{
     color: black;
     background-color: burlywood;
     border: 5px solid white;
@@ -49,43 +49,20 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 2vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     width: 70%;
     height: 70%;
 }
-#AA_buttonArea{
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    height: 30%;
-}
-.AA_button{ 
-    width: 40%;
-    height: 70%;
-    font-size: 5vw;
-}
-#passbox{
-    width: 70%;
-    height: 10%;
-}
-#AA_text{
-    font-size: min(10vw,10vh * 1.5);
-}
-.aa_notcorrect{
-    font-size: min(5vw,5vh * 1.5);
-}
 #start{
     position: absolute;
-    width: min(15vw,15vh * 1.5);
+    width: min(10vw,10vh * 1.5);
     bottom: 0%;
     left: 0%;
     font-size: min(3vw, 3vh * 1.5);
     z-index: 10000000;
-    opacity: 0;
     pointer-events: auto;
 }
 #palletopen{
@@ -94,7 +71,6 @@ body{
     right: 0%;
     font-size: min(3vw, 3vh * 1.5);
     z-index: 10000000;
-    opacity: 0;
     pointer-events: auto;
 }
 #RefuseBoxArea{
@@ -113,7 +89,7 @@ body{
     align-items: center;
     justify-content: center;
 }
-    @font-face {
+@font-face {
     font-family: 'Timer_font';
     src: url('./fonts/DSEG7Classic-Bold.woff2') format('woff2');
     font-weight: normal;
