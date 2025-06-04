@@ -24,6 +24,7 @@ body{
     color: greenyellow;
     font-family: "Timer_font";
     display: flex;
+    padding-top: 5%;
     width: min(75vw,75vh * 1.5);
     height: min(75vh,75vw / 1.5);
     font-size: min(20vw,20vh * 1.5);
