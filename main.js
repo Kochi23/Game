@@ -1,6 +1,7 @@
 let starttime;
 let maxtime = 180-1;//int
 let interval = null;
+let soundinterval = null;
 
 let size = 0;
 
@@ -32,6 +33,13 @@ function timerStart() {
     if(setpassmode) return;
     starttime = new Date();
     interval = setInterval(update,70);
+    const sound = new Audio("sound/OtoLogic/Timer.mp3");
+    sound.play();
+
+    soundinterval = setInterval(() =>{
+        const sound = new Audio("sound/OtoLogic/Timer.mp3");
+        sound.play();
+    },1000);
     inputStart();
     document.getElementById("start").style.display = "none";
 }
@@ -39,6 +47,7 @@ function timerStart() {
 function timerEnd(){
     inputEnd();
     clearInterval(interval);
+    clearInterval(soundinterval);
 }
 
 function update (){
@@ -52,16 +61,26 @@ function update (){
     const sec = Math.floor(((maxtime - deltasec) % 60)).toString().padStart(2,"0");
     const min = Math.floor((maxtime -deltasec)/60).toString().padStart(2,"0");
     timer.innerHTML = `${min}:${sec}:<span style="font-size: 50%;">${mm}</span>`;
+    if(((maxtime+1)*1000 - delta) <= 1000){
+        clearInterval(soundinterval);
+    }
     if(((maxtime+1)*1000 - delta) <= 0){
-        reset();
+        document.getElementById("explosion_sound").play();
+        end();
     }
 }
 
-function reset(){
+function soundcheck(){
+    const sound = new Audio("sound/OtoLogic/explosion.mp3");
+    sound.play();
+}
+
+function end(){
     clearInterval(interval);
+    clearInterval(soundinterval);
     document.getElementById("timer").innerHTML = `00:00:<span style="font-size: 50%;">00</span>`;
-    document.getElementById("start").style.display = "block";
-    InputReset();
+    //document.getElementById("start").style.display = "block";
+    ResetInputing();
     inputEnd();
 }
 
@@ -150,7 +169,7 @@ function inputProcessing(e){
     }
     if(box_counting >= size){
         if (k === "ENTER"){
-            if(setpassmode){console.log(temppass)
+            if(setpassmode){
                 if(pass == ""){
                     inputEnd();
                     document.getElementById("RefuseAreaText").textContent = `パスワード:${temppass}`;
@@ -166,6 +185,7 @@ function inputProcessing(e){
                     if(pass == temppass){
                         document.getElementById("RefuseAreaText").textContent = "パスワード設定完了";
                         document.getElementById("IsSetPassBox2").textContent = "*";
+                        document.getElementById("soundcheck").style.display = "none";
                         size = pass.length;
                         inputEnd();
                         setTimeout(() => {

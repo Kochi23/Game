@@ -73,6 +73,14 @@ body{
     z-index: 10000000;
     pointer-events: auto;
 }
+#soundcheck{
+    position: absolute;
+    bottom: 7%;
+    right: 0%;
+    font-size: min(3vw, 3vh * 1.5);
+    z-index: 10000000;
+    pointer-events: auto;
+}
 #RefuseBoxArea{
     display: flex;
     align-items: center;
