@@ -1,7 +1,7 @@
 let starttime;
 let maxtime = 180-1;//int
 let interval = null;
-let soundinterval = null;
+let timersound = false;
 
 let size = 0;
 
@@ -36,33 +36,59 @@ function timerStart() {
     const sound = new Audio("sound/OtoLogic/Timer.mp3");
     sound.play();
 
-    soundinterval = setInterval(() =>{
-        const sound = new Audio("sound/OtoLogic/Timer.mp3");
-        sound.play();
+    timersound = true
+    setTimeout(() =>{
+        timersoundplay();
     },1000);
     inputStart();
     document.getElementById("start").style.display = "none";
 }
 
+function timersoundplay(){
+    if(!timersound) return;
+
+    let ms = 1000;
+    const delta = getdelta();
+    const timeleft = maxtime - Math.floor(delta/1000);
+
+    if(timeleft < 2)        ms = 5;
+    else if (timeleft < 6) ms = 125;
+    else if (timeleft < 10) ms = 250;
+    else if (timeleft <= 60) ms = 500;
+    else                    ms = 1000;
+
+    setTimeout(() =>{
+        timersoundplay();
+    },ms);
+
+    const sound = new Audio("sound/OtoLogic/Timer.mp3");
+    sound.play();
+}
+
 function timerEnd(){
     inputEnd();
     clearInterval(interval);
-    clearInterval(soundinterval);
+    timersound = false;
 }
 
-function update (){
+function getdelta(){
     const now = new Date();
+    return now.getTime() - starttime.getTime();
+}
+
+function update(){
     const timer = document.getElementById("timer");
 
-    const delta = now.getTime() - starttime.getTime();
+    const delta = getdelta();
     const deltasec = Math.floor(delta/1000);
 
     const mm = (99 - Math.floor(delta/10) %100).toString().padStart(2,"0");
     const sec = Math.floor(((maxtime - deltasec) % 60)).toString().padStart(2,"0");
     const min = Math.floor((maxtime -deltasec)/60).toString().padStart(2,"0");
     timer.innerHTML = `${min}:${sec}:<span style="font-size: 50%;">${mm}</span>`;
-    if(((maxtime+1)*1000 - delta) <= 1000){
-        clearInterval(soundinterval);
+
+    if(((maxtime+1)*1000 - delta) <= 550){
+        timersound = false;
     }
     if(((maxtime+1)*1000 - delta) <= 0){
         document.getElementById("explosion_sound").play();
@@ -77,7 +103,7 @@ function soundcheck(){
 
 function end(){
     clearInterval(interval);
-    clearInterval(soundinterval);
+    timersound = false;
     document.getElementById("timer").innerHTML = `00:00:<span style="font-size: 50%;">00</span>`;
     //document.getElementById("start").style.display = "block";
     ResetInputing();
