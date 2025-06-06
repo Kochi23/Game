@@ -2,6 +2,7 @@ let starttime;
 let maxtime = 180-1;//int
 let interval = null;
 let timersound = false;
+let audioCtx, buffer;
 
 let size = 0;
 
@@ -36,12 +37,24 @@ function timerStart() {
     const sound = new Audio("sound/OtoLogic/Timer.mp3");
     sound.play();
 
-    timersound = true
+    TimerSoundStart();
+    inputStart();
+    document.getElementById("start").style.display = "none";
+}
+
+async function TimerSoundStart(){
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+        const res = await fetch("sound/OtoLogic/Timer.mp3");
+        const arrayBuffer = await res.arrayBuffer();
+        buffer = await audioCtx.decodeAudioData(arrayBuffer);
+    }
+
+    timersound = true;
     setTimeout(() =>{
         timersoundplay();
     },1000);
-    inputStart();
-    document.getElementById("start").style.display = "none";
 }
 
 function timersoundplay(){
@@ -61,8 +74,10 @@ function timersoundplay(){
         timersoundplay();
     },ms);
 
-    const sound = new Audio("sound/OtoLogic/Timer.mp3");
-    sound.play();
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start();
 }
 
 function timerEnd(){
